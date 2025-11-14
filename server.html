@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <title>E-Service Порталы</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef1f5;
+            margin: 0;
+        }
+
+        header {
+            background: #0057b7;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav a {
+            margin: 0 15px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .hero, .content {
+            background: white;
+            padding: 30px;
+            margin: 20px;
+            border-radius: 10px;
+        }
+
+        ul li {
+            margin-bottom: 8px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 20px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 12px 20px;
+            background: #0057b7;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #003d82;
+            transform: scale(1.05);
+        }
+
+        #popup {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #0003;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+            padding: 12px;
+            width: 60%;
+            border-radius: 5px;
+            border: 1px solid #aaa;
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>E-Service | Электронды қызметтер</h1>
+    <nav>
+        <a href="#home">Басты бет</a>
+        <a href="#services">Қызметтер</a>
+        <a href="#apply">Өтініш беру</a>
+        <a href="#contact">Байланыс</a>
+    </nav>
+</header>
+
+<!-- Басты бет -->
+<section id="home" class="hero">
+    <h2>Онлайн қызметтерді 24/7 алыңыз</h2>
+    <p>E-Service — тұрғындарға электронды қызметтерді ұсынатын заманауи веб-портал.</p>
+</section>
+
+<!-- Қызметтер беті -->
+<section id="services" class="content">
+    <h2>Ұсынылатын қызметтер</h2>
+
+    <input type="text" id="search" class="search-box" placeholder="Қызметті іздеу...">
+
+    <ul id="serviceList">
+        <li>Анықтама алу</li>
+        <li>Электронды өтініш беру</li>
+        <li>Құжаттарды онлайн тапсыру</li>
+        <li>Өтініш статусын тексеру</li>
+        <li>Онлайн кеңес</li>
+    </ul>
+</section>
+
+<!-- Өтініш беру -->
+<section id="apply" class="content">
+    <h2>Өтініш беру</h2>
+
+    <form id="requestForm">
+        <label>Аты-жөні</label>
+        <input type="text" id="fio" required>
+
+        <label>ЖСН</label>
+        <input type="text" id="iin" required maxlength="12">
+
+        <label>Телефон</label>
+        <input type="text" id="phone" placeholder="+7 777 000 00 00">
+
+        <label>Қызмет түрі</label>
+        <select id="serviceType">
+            <option>Анықтама алу</option>
+            <option>Өтініш жіберу</option>
+            <option>Құжат тапсыру</option>
+        </select>
+
+        <label>Құжат жүктеу</label>
+        <input type="file" id="file">
+
+        <button type="submit">Жіберу</button>
+    </form>
+</section>
+
+<!-- Байланыс -->
+<section id="contact" class="content">
+    <h2>Байланыс</h2>
+
+    <p>Email: info@eservice.kz</p>
+    <p>Телефон: +7 777 000 00 00</p>
+
+    <h3>Кері байланыс</h3>
+    <form>
+        <label>Аты-жөні</label>
+        <input type="text">
+
+        <label>Хабарлама</label>
+        <textarea></textarea>
+
+        <button>Жіберу</button>
+    </form>
+</section>
+
+<footer style="text-align:center; padding:20px;">
+    © 2025 E-Service порталы
+</footer>
+
+<!-- Popup хабарлама -->
+<div id="popup">Өтінішіңіз сәтті жіберілді!</div>
+
+<script>
+    // ---------------------
+    // 1) Іздеу функциясы
+    // ---------------------
+    document.getElementById("search").addEventListener("keyup", function() {
+        const text = this.value.toLowerCase();
+        const items = document.querySelectorAll("#serviceList li");
+
+        items.forEach(li => {
+            li.classList.toggle("hidden", !li.textContent.toLowerCase().includes(text));
+        });
+    });
+
+    // ---------------------
+    // 2) Popup шығару функциясы
+    // ---------------------
+    function showPopup() {
+        const popup = document.getElementById("popup");
+        popup.style.display = "block";
+        setTimeout(() => popup.style.display = "none", 3000);
+    }
+
+    // ---------------------
+    // 3) Өтініш жіберу проверкасы
+    // ---------------------
+    document.getElementById("requestForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const fio = document.getElementById("fio").value;
+        const iin = document.getElementById("iin").value;
+
+        if (fio.length < 5) {
+            alert("Аты-жөніңіз дұрыс емес!");
+            return;
+        }
+
+        if (iin.length !== 12 || isNaN(iin)) {
+            alert("ЖСН дұрыс емес!");
+            return;
+        }
+
+        showPopup();
+        this.reset();
+    });
+</script>
+
+</body>
+</html>
